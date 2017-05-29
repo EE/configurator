@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'polymorphic',
+    'rest_framework',
     'configurator.apps.resource',
     'configurator.apps.application',
     'configurator.apps.http_resource',
