@@ -1,0 +1,183 @@
+[
+{
+  "model": "resource.resource",
+  "pk": 1,
+  "fields": {
+    "polymorphic_ctype": 14,
+    "name": "Nginx",
+    "description": "Nginx reverse proxy server"
+  }
+},
+{
+  "model": "resource.resource",
+  "pk": 2,
+  "fields": {
+    "polymorphic_ctype": 14,
+    "name": "Apache",
+    "description": "Apache web server"
+  }
+},
+{
+  "model": "resource.resource",
+  "pk": 3,
+  "fields": {
+    "polymorphic_ctype": 8,
+    "name": "titlecos",
+    "description": "string to be shown in index"
+  }
+},
+{
+  "model": "resource.resource",
+  "pk": 4,
+  "fields": {
+    "polymorphic_ctype": 11,
+    "name": "apache-conf",
+    "description": "Resources for apache image"
+  }
+},
+{
+  "model": "resource.resource",
+  "pk": 5,
+  "fields": {
+    "polymorphic_ctype": 15,
+    "name": "proxy1",
+    "description": "first proxy for nginx conf"
+  }
+},
+{
+  "model": "resource.resource",
+  "pk": 6,
+  "fields": {
+    "polymorphic_ctype": 15,
+    "name": "proxy2",
+    "description": "second proxy for nginx"
+  }
+},
+{
+  "model": "resource.resource",
+  "pk": 7,
+  "fields": {
+    "polymorphic_ctype": 11,
+    "name": "nginx-conf-loc",
+    "description": "nginx location configuration"
+  }
+},
+{
+  "model": "resource.resource",
+  "pk": 8,
+  "fields": {
+    "polymorphic_ctype": 8,
+    "name": "location_name",
+    "description": "location name for nginx"
+  }
+},
+{
+  "model": "resource.stringresource",
+  "pk": 3,
+  "fields": {
+    "value": "TEST"
+  }
+},
+{
+  "model": "resource.stringresource",
+  "pk": 8,
+  "fields": {
+    "value": "/test"
+  }
+},
+{
+  "model": "resource.dictresource",
+  "pk": 4,
+  "fields": {}
+},
+{
+  "model": "resource.dictresource",
+  "pk": 7,
+  "fields": {}
+},
+{
+  "model": "resource.dictresourceentry",
+  "pk": 1,
+  "fields": {
+    "dictionary": 4,
+    "key": "title",
+    "value": 3
+  }
+},
+{
+  "model": "resource.dictresourceentry",
+  "pk": 2,
+  "fields": {
+    "dictionary": 7,
+    "key": "location",
+    "value": 8
+  }
+},
+{
+  "model": "resource.dictresourceentry",
+  "pk": 3,
+  "fields": {
+    "dictionary": 7,
+    "key": "pass",
+    "value": 5
+  }
+},
+{
+  "model": "http_resource.httpresource",
+  "pk": 5,
+  "fields": {
+    "app": 1,
+    "api": "public",
+    "host": "127.0.0.1",
+    "port": 8000,
+    "path": "/"
+  }
+},
+{
+  "model": "http_resource.httpresource",
+  "pk": 6,
+  "fields": {
+    "app": 1,
+    "api": "public",
+    "host": "127.0.0.1",
+    "port": 8080,
+    "path": "/ezd"
+  }
+},
+{
+  "model": "application.appresource",
+  "pk": 1,
+  "fields": {
+    "required_resource": 7,
+    "image_name": "nginx",
+    "command": ""
+  }
+},
+{
+  "model": "application.appresource",
+  "pk": 2,
+  "fields": {
+    "required_resource": null,
+    "image_name": "httpd",
+    "command": ""
+  }
+},
+{
+  "model": "application.mountedfile",
+  "pk": 1,
+  "fields": {
+    "app": 2,
+    "mount_path": "/usr/local/apache2/htdocs",
+    "file": "mounted_files/index_tmpl.html"
+  }
+},
+{
+  "model": "application.mountedfile",
+  "pk": 2,
+  "fields": {
+    "app": 1,
+    "mount_path": "/etc/nginx.conf",
+    "file": "mounted_files/nginx.conf"
+  }
+}
+]

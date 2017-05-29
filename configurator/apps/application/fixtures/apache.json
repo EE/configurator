@@ -1,0 +1,68 @@
+[
+{
+  "model": "resource.resource",
+  "pk": 6,
+  "fields": {
+    "polymorphic_ctype": 14,
+    "name": "Apache",
+    "description": "apache server"
+  }
+},
+{
+  "model": "resource.resource",
+  "pk": 7,
+  "fields": {
+    "polymorphic_ctype": 10,
+    "name": "title",
+    "description": "A title to be shown in <h1> tags at index page"
+  }
+},
+{
+  "model": "resource.resource",
+  "pk": 8,
+  "fields": {
+    "polymorphic_ctype": 11,
+    "name": "apache-config",
+    "description": "Resources for Apache image"
+  }
+},
+{
+  "model": "resource.stringresource",
+  "pk": 7,
+  "fields": {
+    "value": "TEST"
+  }
+},
+{
+  "model": "resource.dictresource",
+  "pk": 8,
+  "fields": {}
+},
+{
+  "model": "resource.dictresourceentry",
+  "pk": 2,
+  "fields": {
+    "dictionary": 8,
+    "key": "title",
+    "value": 7
+  }
+},
+{
+  "model": "application.appresource",
+  "pk": 6,
+  "fields": {
+    "required_resource": 8,
+    "image_name": "httpd",
+    "command": ""
+  }
+},
+{
+  "model": "application.mountedfile",
+  "pk": 3,
+  "fields": {
+    "app": 6,
+    "mount_path": "/usr/local/apache2/htdocs",
+    "file": "mounted_files/index_tmpl_vhH6YuQ.html"
+  }
+}
+]
