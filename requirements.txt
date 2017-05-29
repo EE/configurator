@@ -1,1 +1,2 @@
 django==1.10
+django-polymorphic==1.1
