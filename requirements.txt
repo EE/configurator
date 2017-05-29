@@ -1,2 +1,4 @@
 django==1.10
 django-polymorphic==1.1
+pyyaml==3.12
+Jinja2==2.9.6

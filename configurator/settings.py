@@ -122,3 +122,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MOUNTED_FILES_TEMPLATES_DIR = 'mounted_files/'
+
+START_PRE_HOOKS = [
+    'configurator.apps.application.start.pre_start',
+]
+START_POST_HOOKS = [
+    'configurator.apps.application.start.post_start',
+]
+
+DOCKER_COMPOSE_DIR = 'docker_compose/'
