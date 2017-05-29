@@ -3,6 +3,7 @@ from .models import *
 from polymorphic.admin import PolymorphicChildModelAdmin
 
 
+@admin.register(Resource)
 class ResourceChildAdmin(PolymorphicChildModelAdmin):
     """ Base admin class for all child models """
     base_model = Resource
