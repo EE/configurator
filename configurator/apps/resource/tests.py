@@ -1,14 +1,18 @@
 from django.test import TestCase
 from django.test import Client
 from .models import *
+from django.core.management import call_command
 
 
 class APITest(TestCase):
 
     def setUp(self):
-        # Every test needs a client.
+        call_command('loaddata', 'test', verbosity=0)
         self.sr = StringResource.objects.create(
             name="test", description="test descr", value="test2")
+        self.ir = IntResource.objects.create(
+            name="testInt", description="test descr", value=8080)
+
         self.client = Client()
         response = self.client.get('/api/resource/')
         print(response.status_code)
@@ -22,4 +26,4 @@ class APITest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         self.assertEqual(
-            response.content, b'{"test":{"type":"string","value":"test2","description":"test descr"}}')
+            b'"testInt"' in response.content, True)

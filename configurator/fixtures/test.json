@@ -1,0 +1,265 @@
+[
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$30000$d9scep3aV9k1$GB4apwDmV0gLBTUxQ2WrCebalgcnRi0aBDI5zJD0PAU=",
+    "last_login": "2017-05-30T13:55:24.137Z",
+    "is_superuser": true,
+    "username": "tadeo",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2017-05-29T12:09:47.943Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "3msvyhna7dp5ab8jyjty4t3txkobz69n",
+  "fields": {
+    "session_data": "YjUwMWIwYjQzM2Y1NDI5NzQ4ZTdlYjIzMWI1Yjc2ODU1MTE5M2EwODp7Il9hdXRoX3VzZXJfaGFzaCI6IjdkZTk4ODRkZGUwYzRmNGIwYzc0N2YxMzA3MDEyYzUxMDI0OTgzNDQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=",
+    "expire_date": "2017-06-12T12:10:06.060Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "wxrxjwj66qvph5bp35cme1twgez2z3yl",
+  "fields": {
+    "session_data": "YjUwMWIwYjQzM2Y1NDI5NzQ4ZTdlYjIzMWI1Yjc2ODU1MTE5M2EwODp7Il9hdXRoX3VzZXJfaGFzaCI6IjdkZTk4ODRkZGUwYzRmNGIwYzc0N2YxMzA3MDEyYzUxMDI0OTgzNDQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=",
+    "expire_date": "2017-06-13T13:55:24.141Z"
+  }
+},
+{
+  "model": "resource.resource",
+  "pk": 1,
+  "fields": {
+    "polymorphic_ctype": [
+      "resource",
+      "dictresource"
+    ],
+    "name": "nginx_params",
+    "description": "user defined params for nginx"
+  }
+},
+{
+  "model": "resource.resource",
+  "pk": 2,
+  "fields": {
+    "polymorphic_ctype": [
+      "application",
+      "appresource"
+    ],
+    "name": "Nginx",
+    "description": "Nginx reverse proxy server"
+  }
+},
+{
+  "model": "resource.resource",
+  "pk": 3,
+  "fields": {
+    "polymorphic_ctype": [
+      "resource",
+      "stringresource"
+    ],
+    "name": "path",
+    "description": ""
+  }
+},
+{
+  "model": "resource.resource",
+  "pk": 4,
+  "fields": {
+    "polymorphic_ctype": [
+      "resource",
+      "listresource"
+    ],
+    "name": "services",
+    "description": "Nginx redirect"
+  }
+},
+{
+  "model": "resource.resource",
+  "pk": 5,
+  "fields": {
+    "polymorphic_ctype": [
+      "resource",
+      "dictresource"
+    ],
+    "name": "nginx-services-redirect",
+    "description": ""
+  }
+},
+{
+  "model": "resource.resource",
+  "pk": 6,
+  "fields": {
+    "polymorphic_ctype": [
+      "resource",
+      "dictresource"
+    ],
+    "name": "apache-dict",
+    "description": ""
+  }
+},
+{
+  "model": "resource.resource",
+  "pk": 7,
+  "fields": {
+    "polymorphic_ctype": [
+      "application",
+      "appresource"
+    ],
+    "name": "Apache",
+    "description": "apache web server"
+  }
+},
+{
+  "model": "resource.resource",
+  "pk": 8,
+  "fields": {
+    "polymorphic_ctype": [
+      "http_resource",
+      "httpresource"
+    ],
+    "name": "apache-endpoint",
+    "description": ""
+  }
+},
+{
+  "model": "resource.resource",
+  "pk": 9,
+  "fields": {
+    "polymorphic_ctype": [
+      "resource",
+      "intresource"
+    ],
+    "name": "port",
+    "description": ""
+  }
+},
+{
+  "model": "resource.stringresource",
+  "pk": 3,
+  "fields": {
+    "value": "/test"
+  }
+},
+{
+  "model": "resource.intresource",
+  "pk": 9,
+  "fields": {
+    "value": 8080
+  }
+},
+{
+  "model": "resource.listresource",
+  "pk": 4,
+  "fields": {
+    "value": [
+      5
+    ]
+  }
+},
+{
+  "model": "resource.dictresource",
+  "pk": 1,
+  "fields": {}
+},
+{
+  "model": "resource.dictresource",
+  "pk": 5,
+  "fields": {}
+},
+{
+  "model": "resource.dictresource",
+  "pk": 6,
+  "fields": {}
+},
+{
+  "model": "resource.dictresourceentry",
+  "pk": 1,
+  "fields": {
+    "dictionary": 1,
+    "key": "services",
+    "value": 4
+  }
+},
+{
+  "model": "resource.dictresourceentry",
+  "pk": 2,
+  "fields": {
+    "dictionary": 5,
+    "key": "path",
+    "value": 3
+  }
+},
+{
+  "model": "resource.dictresourceentry",
+  "pk": 3,
+  "fields": {
+    "dictionary": 5,
+    "key": "service",
+    "value": 8
+  }
+},
+{
+  "model": "resource.dictresourceentry",
+  "pk": 4,
+  "fields": {
+    "dictionary": 6,
+    "key": "title",
+    "value": 3
+  }
+},
+{
+  "model": "application.appresource",
+  "pk": 2,
+  "fields": {
+    "required_resource": 1,
+    "image_name": "nginx",
+    "command": ""
+  }
+},
+{
+  "model": "application.appresource",
+  "pk": 7,
+  "fields": {
+    "required_resource": 6,
+    "image_name": "httpd",
+    "command": ""
+  }
+},
+{
+  "model": "application.mountedfile",
+  "pk": 1,
+  "fields": {
+    "app": 2,
+    "mount_path": "/etc/nginx/nginx.conf",
+    "file": "mounted_files/nginx.conf_uqTC55p.tpl"
+  }
+},
+{
+  "model": "application.mountedfile",
+  "pk": 2,
+  "fields": {
+    "app": 7,
+    "mount_path": "/usr/local/apache2/htdocs/index.html",
+    "file": "mounted_files/index_tmpl.html"
+  }
+},
+{
+  "model": "http_resource.httpresource",
+  "pk": 8,
+  "fields": {
+    "app": 7,
+    "api": "",
+    "host": "test2",
+    "port": 80,
+    "path": "/"
+  }
+}
+]
