@@ -15,7 +15,6 @@ class ResourceList(APIView):
     def get(self, request, format=None):
         resources = [r for r in Resource.objects.all()
                      if hasattr(r, 'type_name')]
-
         result = {}
         for resource in resources:
             res_class_name = resource.type_name.title() + "Serializer"
@@ -23,7 +22,6 @@ class ResourceList(APIView):
                 resource, many=False)
             data = serializer.data
             del data['name']
-            print(data)
             result[resource.name] = data
         return Response(result)
 
