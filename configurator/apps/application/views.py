@@ -16,7 +16,7 @@ from .serializers import AppSerializer
 
 class AppList(APIView):
     """
-    List all apps, or create a new snippet.
+    List all apps, or create a new app.
     """
 
     def get(self, request, format=None):
@@ -34,7 +34,7 @@ class AppList(APIView):
 
 class AppDetail(APIView):
     """
-    Retrieve, update or delete a snippet instance.
+    Retrieve, update or delete an app instance.
     """
 
     def get_object(self, pk):

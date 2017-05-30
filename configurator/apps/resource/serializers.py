@@ -6,7 +6,7 @@ class ResourceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Resource
-        exclude = ('polymorphic_ctype',)
+        exclude = ('polymorphic_ctype', "id",)
 
     def to_representation(self, obj):
         """
@@ -25,23 +25,23 @@ class ResourceSerializer(serializers.ModelSerializer):
 
 class StringSerializer(serializers.ModelSerializer):
     # type_name = "string"
-    type_name = serializers.CharField(read_only=True)
+    type = serializers.CharField(read_only=True, source='type_name')
     value = serializers.CharField()
     # value = serializers.SlugRelatedField(
     # many=False, slug_field='value', read_only=True)
 
     class Meta:
         model = StringResource
-        exclude = ('polymorphic_ctype',)
+        exclude = ('polymorphic_ctype', "id",)
 
 
 class IntSerializer(serializers.ModelSerializer):
-    type_name = serializers.CharField(read_only=True)
+    type = serializers.CharField(source='type_name')
     value = serializers.IntegerField()
 
     class Meta:
         model = IntResource
-        exclude = ('polymorphic_ctype',)
+        exclude = ('polymorphic_ctype', "id",)
 
 
 class DictEntrySerializer(serializers.ModelSerializer):
@@ -53,7 +53,7 @@ class DictEntrySerializer(serializers.ModelSerializer):
 
 
 class DictSerializer(serializers.ModelSerializer):
-    type_name = serializers.CharField(read_only=True)
+    type = serializers.CharField(read_only=True, source='type_name')
     entries = DictEntrySerializer(many=True)
 
     class Meta:
@@ -62,7 +62,7 @@ class DictSerializer(serializers.ModelSerializer):
 
 
 class ListSerializer(serializers.ModelSerializer):
-    type_name = serializers.CharField(read_only=True)
+    type = serializers.CharField(read_only=True, source='type_name')
     value = ResourceSerializer(many=True, read_only=True)
 
     class Meta:
