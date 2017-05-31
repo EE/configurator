@@ -11,6 +11,8 @@ class HTTPResource(Resource):
      * `api` is a string identifying type (protocol) of this HTTP resource.
      * `host`, `port` and `path` specify location.
     """
+    type_name = 'http'
+
     app = models.ForeignKey('application.AppResource', blank=True, null=True)
     api = models.CharField(max_length=200, blank=True)
     host = models.CharField(max_length=200)
