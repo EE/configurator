@@ -1,8 +1,6 @@
 from django.db import models
 from polymorphic.models import PolymorphicModel
 
-from polymorphic.models import PolymorphicModel
-
 
 class Resource(PolymorphicModel):
     """Abstract resource."""

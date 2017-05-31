@@ -79,5 +79,5 @@ class HttpSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = HTTPResource
-        fields = '__all__'
+        exclude = ('polymorphic_ctype',)
         depth = 1
