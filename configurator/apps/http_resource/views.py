@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from .models import HTTPResource
-from .serializers import HTTPResourceSerializer
+from .serializers import HTTPSerializer
 
 
 class HTTPResourceViewSet(viewsets.ModelViewSet):
@@ -8,4 +8,4 @@ class HTTPResourceViewSet(viewsets.ModelViewSet):
     API endpoint that allows users to be viewed or edited.
     """
     queryset = HTTPResource.objects.all()
-    serializer_class = HTTPResourceSerializer
+    serializer_class = HTTPSerializer

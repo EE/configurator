@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import HTTPResource
 
 
-class HTTPResourceSerializer(serializers.ModelSerializer):
+class HTTPSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = HTTPResource

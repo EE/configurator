@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+from configurator.apps.http_resource.models import HTTPResource
 
 
 class ResourceSerializer(serializers.ModelSerializer):
@@ -20,6 +21,8 @@ class ResourceSerializer(serializers.ModelSerializer):
             return ListSerializer(obj, context=self.context).to_representation(obj)
         elif isinstance(obj, DictResource):
             return DictSerializer(obj, context=self.context).to_representation(obj)
+        elif isinstance(obj, HTTPResource):
+            return HttpSerializer(obj, context=self.context).to_representation(obj)
         return super(ResourceSerializer, self).to_representation(obj)
 
 
@@ -69,3 +72,12 @@ class ListSerializer(serializers.ModelSerializer):
         model = ListResource
         exclude = ('polymorphic_ctype',)
         depth = 10
+
+
+class HttpSerializer(serializers.ModelSerializer):
+    # zrobić refa z pola app
+
+    class Meta:
+        model = HTTPResource
+        fields = '__all__'
+        depth = 1
