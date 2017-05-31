@@ -3,6 +3,7 @@ from polymorphic.models import PolymorphicModel
 
 from polymorphic.models import PolymorphicModel
 
+
 class Resource(PolymorphicModel):
     """Abstract resource."""
 
@@ -56,6 +57,7 @@ class StringResource(Resource):
     def __str__(self):
         return (self.value[:20] + '..') if len(self.value) > 20 else self.value
 
+
 class IntResource(Resource):
     type_name = 'int'
     value = models.IntegerField()
@@ -78,7 +80,8 @@ class IntResource(Resource):
 class ListResource(Resource):
     """List of resources. All of them should be same type."""
     type_name = 'list'
-    value = models.ManyToManyField(Resource, related_name='member_of_lists')
+    value = models.ManyToManyField(
+        Resource, related_name='member_of_lists', null=True, blank=True)
 
     @property
     def requirements(self):
