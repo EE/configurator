@@ -1,0 +1,296 @@
+FORMAT: 1A
+
+Configurator
+============
+
+Configurator installs, configures, monitors applications running on the
+instance.
+
+Data structures
+---------------
+
+### App state (enum)
++ up
++ down
+
+### Resource type (enum)
++ string
++ int
++ list
++ dict
++ endpoint
+
+### Error
++ message: Making coffee has gone terribly wrong. (string) - Human-readable error message.
+
+### Resource form
++ name: Mains voltage (string) - Short description of resource.
++ description: Electric voltage powering the coffee grinder. (string) - A little bit more extensive description.
++ type (Resource type)
++ One of
+    + Properties
+        + type: string (Resource type)
+    + Properties
+        + type: int (Resource type)
+    + Properties
+        + type: list (Resource type)
+        + of (Resource form) - Type of nested fields.
+    + Properties
+        + type: dict (Resource type)
+        + fields (array)
+            + (object)
+                + name: u_deviation (string) - Name of subfield.
+                + type (Resource form) - Type of subfield.
+    + Properties
+        + type: endpoint (Resource type)
+        + api: CAS v0 (string) - Required API of the endpoint.
+
+### Resource
++ type (Resource type)
++ id (number, optional) - id of this resource
++ One of
+    + Properties
+        + type: ref (string)
+        + id: 5 (number) - Id of resource.
+    + Properties
+        + type: string (Resource type)
+        + value: 220V (string)
+    + Properties
+        + type: int (Resource type)
+        + value: 220 (number)
+    + Properties
+        + type: list (Resource type)
+        + value (array[Resource])
+    + Properties
+        + type: dict (Resource type)
+        + value (object)
+            + *field_name* (Resource)
+            + *...* (Resource)
+
+### Form error (Error)
++ fields (object)
+
+### Dependency error (Error)
++ dependent: 1, 4, 7 (array[number]) - List of dependent packages' ids.
+
+### Short package description
++ id: SCMS (string) - Unique id of the package.
++ name: Secure Coffee Making Server (string) - Name of the package.
+
+###  Package description
++ Include Short package description
++ description: The most secure server for making your favourite coffee in single request. (string) - Human readable, short description of the package.
++ versions: 0.4.5, 0.4.6, `0.5.0-beta` (array) - List of available versions.
+
+### Short repository description
++ id: 0 (number) - Id of repository.
++ name: `Official SCMS repository.` (string) - Human-readable name of the repository.
+
+### Short application description
++ id: 1 (number) - Id of this application.
++ state (App state) - Current state of application.
++ version: 0.4.6 - Installed version.
++ replication: 1 (number) - Number of instances.
+
+### Application description
++ Include Short application description
+
+Package repositiories [/repo]
+-----------------------------
+
+### List repositiories [GET]
+
+List attached repositories.
+
++ Response 200 (application/json)
+
+    + Attributes (array[Short repository description])
+
+Single repository [/repo/{repo_id}]
+-----------------------------------
+
+### Repository status [GET]
+
+Get detailed repository description.
+
++ Response 200 (application/json)
+
+    + Attributes
+        + Include Short repository description
+        + url: `https://scms.example.com/mirror/repo` (string)
+        + packages: 354 (number)
+        + `update_status`: done, `in_progress`, failed, `no_data` (enum)
+        + `last_update_date`: `<date and time in ISO 8601>` (string)
+
+### Request repository update [POST /repo/{repo_id}/update]
+
++ Response 202
+
++ Response 400 (application/json)
+
+    + Attributes (Error)
+
+### List packages in repo [GET /repo/{repo_id}/package]
+
+List packages available in repository.
+
++ Response 200 (application/json)
+
+    + Attributes (array[Short package description])
+
+Package [/repo/{repo_id}/package/{pkg_id}]
+------------------------------------------
+
+### Get package details [GET]
+
++ Response 200 (application/json)
+
+    + Attributes (Package description)
+
+### Get installation form description [GET /repo/{repo_id}/package/{pkg_id}/install]
+
++ Response 200 (application/json)
+
+    + Attributes
+        + form (Resource form)
+        + default (Resource)
+
+### Request installation [POST /repo/{repo_id}/package/{pkg_id}/install]
+Request installation of a package with given arguments.
+Upon sucessfull installation returns id of newly created application.
+
++ Request (application/json)
+
+    + Attributes (Resource)
+
++ Response 201 (application/json)
+
+    + Attributes (number)
+
++ Response 400
+
+    + Attributes (Form error)
+
+Installed applications [/app]
+-----------------------------
+
+### Listing installed apps [GET]
+
++ Response 200 (appliation/json)
+
+    + Attributes (array[Short application description])
+
+Single installed application [/app/{app_id}]
+--------------------------------------------
+
+### Get application details [GET]
+
++ Response 200 (application/json)
+
+    + Attributes (Application description)
+
+### Uninstall an app [DELETE]
+
++ Response 204
+
++ Response 400 (application/json)
+
+    + Attributes (Dependency error)
+
+### Set application state [POST /app/{app_id}/state]
+
++ Request (application/json)
+
+    + Attributes (App state)
+
++ Response 204
+
++ Response 400
+
+    + Attributes (Dependency error)
+
+### Set replication factor [POST /app/{app_id}/replication]
+
++ Request (application/json)
+
+    + Attributes (number)
+
++ Response 204
+
++ Response 400 (application/json)
+
+    + Attributes (Error)
+
+### Get application logs [GET /app/{app_id}/logs]
+
++ Response 200
+
+        // never ending stream of logs
+        system startup
+        another line
+        and one more
+        ...
+
+### Get app config [GET /app/{app_id}/config]
+
++ Response 200 (application/json)
+
+    + Attributes (Resource)
+
+### Set app config [POST /app/{app_id}/config]
+
++ Request (application/json)
+
+    + Attributes (Resource)
+
++ Response 204
+
++ Response 400
+
+    + Attributes (Form error)
+
+### Request application upgrade/downgrade [POST /app/{app_id}/version]
+
++ Request (application/json)
+
+    + Attributes (string)
+
++ Response 204
+
++ Response 400
+
+   + Attributes (Error)
+
+Resources [/resource]
+---------------------
+
+### List resources [GET]
+
++ Response 200 (application/json)
+
+    + Attributes (array[number])
+
+### Get resources for form [GET /resources_for_form]
+
++ Request (application/json)
+
+    + Attributes (Resource form)
+
++ Response 200 (application/json)
+
+    + Attributes (array[number])
+
+Single resource [/resource]
+---------------------------
+
+### Get resource form [GET /resource/{res_id}/form]
+
++ Response 200 (application/json)
+
+    + Attributes (Resource form)
+
+### Get resource value [GET]
+
++ Response 200
+
+    + Attributes (Resource)
