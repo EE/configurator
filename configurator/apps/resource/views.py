@@ -15,14 +15,12 @@ class ResourceList(APIView):
     def get(self, request, format=None):
         resources = [r for r in Resource.objects.all()
                      if hasattr(r, 'type_name')]
-        result = {}
+        result = []
         for resource in resources:
             res_class_name = resource.type_name.title() + "Serializer"
             serializer = getattr(serializers, res_class_name)(
                 resource, many=False)
-            data = serializer.data
-            del data['name']
-            result[resource.name] = data
+            result.append(serializer.data)
         return Response(result)
 
     def post(self, request, format=None):

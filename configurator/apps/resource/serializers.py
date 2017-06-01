@@ -26,25 +26,28 @@ class ResourceSerializer(serializers.ModelSerializer):
         return super(ResourceSerializer, self).to_representation(obj)
 
 
-class StringSerializer(serializers.ModelSerializer):
-    # type_name = "string"
+class ResourceAbstractSerializer(serializers.ModelSerializer):
     type = serializers.CharField(read_only=True, source='type_name')
+
+    class Meta:
+        exclude = ('polymorphic_ctype',)
+
+
+class StringSerializer(ResourceAbstractSerializer):
+    # type_name = "string"
     value = serializers.CharField()
     # value = serializers.SlugRelatedField(
     # many=False, slug_field='value', read_only=True)
 
     class Meta:
         model = StringResource
-        exclude = ('polymorphic_ctype', "id",)
 
 
-class IntSerializer(serializers.ModelSerializer):
-    type = serializers.CharField(source='type_name')
+class IntSerializer(ResourceAbstractSerializer):
     value = serializers.IntegerField()
 
     class Meta:
         model = IntResource
-        exclude = ('polymorphic_ctype', "id",)
 
 
 class DictEntrySerializer(serializers.ModelSerializer):
@@ -55,29 +58,22 @@ class DictEntrySerializer(serializers.ModelSerializer):
         exclude = ('dictionary', 'id',)
 
 
-class DictSerializer(serializers.ModelSerializer):
-    type = serializers.CharField(read_only=True, source='type_name')
+class DictSerializer(ResourceAbstractSerializer):
     entries = DictEntrySerializer(many=True)
 
     class Meta:
         model = DictResource
-        exclude = ('polymorphic_ctype',)
 
 
-class ListSerializer(serializers.ModelSerializer):
-    type = serializers.CharField(read_only=True, source='type_name')
+class ListSerializer(ResourceAbstractSerializer):
     value = ResourceSerializer(many=True, read_only=True)
 
     class Meta:
         model = ListResource
-        exclude = ('polymorphic_ctype',)
-        depth = 10
 
 
-class HttpSerializer(serializers.ModelSerializer):
+class HttpSerializer(ResourceAbstractSerializer):
     # zrobić refa z pola app
 
     class Meta:
         model = HTTPResource
-        exclude = ('polymorphic_ctype',)
-        depth = 1

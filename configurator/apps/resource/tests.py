@@ -13,11 +13,6 @@ class APITest(TestCase):
         self.ir = IntResource.objects.create(
             name="testInt", description="test descr", value=8080)
 
-        self.client = Client()
-        response = self.client.get('/api/resource/')
-        print(response.status_code)
-        print(response.content)
-
     def test_resource_get(self):
         # Issue a GET request.
         response = self.client.get('/api/resource/')
