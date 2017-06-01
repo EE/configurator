@@ -1,29 +1,10 @@
+import sys
 from rest_framework import serializers
 from .models import *
 from configurator.apps.http_resource.models import HTTPResource
 
 
-class ResourceSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Resource
-        exclude = ('polymorphic_ctype', "id",)
-
-    def to_representation(self, obj):
-        """
-        Because Resource is Polymorphic
-        """
-        if isinstance(obj, StringResource):
-            return StringSerializer(obj, context=self.context).to_representation(obj)
-        elif isinstance(obj, IntResource):
-            return IntSerializer(obj, context=self.context).to_representation(obj)
-        elif isinstance(obj, ListResource):
-            return ListSerializer(obj, context=self.context).to_representation(obj)
-        elif isinstance(obj, DictResource):
-            return DictSerializer(obj, context=self.context).to_representation(obj)
-        elif isinstance(obj, HTTPResource):
-            return HttpSerializer(obj, context=self.context).to_representation(obj)
-        return super(ResourceSerializer, self).to_representation(obj)
+THIS_MODULE = sys.modules[__name__]
 
 
 class ResourceAbstractSerializer(serializers.ModelSerializer):
@@ -33,20 +14,33 @@ class ResourceAbstractSerializer(serializers.ModelSerializer):
         exclude = ('polymorphic_ctype',)
 
 
-class StringSerializer(ResourceAbstractSerializer):
-    # type_name = "string"
-    value = serializers.CharField()
-    # value = serializers.SlugRelatedField(
-    # many=False, slug_field='value', read_only=True)
+class ResourceSerializer(ResourceAbstractSerializer):
+    type = None
 
     class Meta:
+        model = Resource
+
+    def to_representation(self, obj):
+        """
+        Because Resource is Polymorphic
+        """
+        if obj.serializer == "ResourceSerializer":
+            return super(ResourceSerializer, self).to_representation(obj)
+        else:
+            return getattr(THIS_MODULE, obj.serializer)(obj, context=self.context).to_representation(obj)
+
+
+class StringSerializer(ResourceAbstractSerializer):
+    value = serializers.CharField()
+
+    class Meta(ResourceAbstractSerializer.Meta):
         model = StringResource
 
 
 class IntSerializer(ResourceAbstractSerializer):
     value = serializers.IntegerField()
 
-    class Meta:
+    class Meta(ResourceAbstractSerializer.Meta):
         model = IntResource
 
 
@@ -61,19 +55,19 @@ class DictEntrySerializer(serializers.ModelSerializer):
 class DictSerializer(ResourceAbstractSerializer):
     entries = DictEntrySerializer(many=True)
 
-    class Meta:
+    class Meta(ResourceAbstractSerializer.Meta):
         model = DictResource
 
 
 class ListSerializer(ResourceAbstractSerializer):
     value = ResourceSerializer(many=True, read_only=True)
 
-    class Meta:
+    class Meta(ResourceAbstractSerializer.Meta):
         model = ListResource
 
 
 class HttpSerializer(ResourceAbstractSerializer):
     # zrobić refa z pola app
 
-    class Meta:
+    class Meta(ResourceAbstractSerializer.Meta):
         model = HTTPResource

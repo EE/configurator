@@ -16,7 +16,6 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework import routers
-import configurator.apps.http_resource.urls as http_res
 import configurator.apps.application.urls as app
 import configurator.apps.resource.urls as resource
 
@@ -25,7 +24,6 @@ API_PREFIX = 'api/'
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^{}app/'.format(API_PREFIX), include(app.urls)),
-    url(r'^{}httpres/'.format(API_PREFIX), include(http_res.urls)),
     url(r'^{}resource/'.format(API_PREFIX), include(resource.urls)),
     url(r'^api-rest/', include('rest_framework.urls', namespace='rest_framework'))
 ]

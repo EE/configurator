@@ -4,6 +4,7 @@ from polymorphic.models import PolymorphicModel
 
 class Resource(PolymorphicModel):
     """Abstract resource."""
+    serializer = "ResourceSerializer"
 
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
@@ -26,7 +27,7 @@ class Resource(PolymorphicModel):
 
     def flatten(self):
         """Frozenset of resources with skipped resources that are
-        'empty' - like lists and dicts."""
+        "empty" - like lists and dicts."""
         return frozenset([self])
 
     def start(self, env):
@@ -38,7 +39,8 @@ class Resource(PolymorphicModel):
 
 
 class StringResource(Resource):
-    type_name = 'string'
+    type_name = "string"
+    serializer = "StringSerializer"
     value = models.TextField()
 
     @property
@@ -53,11 +55,12 @@ class StringResource(Resource):
         return self.value
 
     def __str__(self):
-        return (self.value[:20] + '..') if len(self.value) > 20 else self.value
+        return (self.value[:20] + "..") if len(self.value) > 20 else self.value
 
 
 class IntResource(Resource):
-    type_name = 'int'
+    type_name = "int"
+    serializer = "IntSerializer"
     value = models.IntegerField()
 
     @property
@@ -72,14 +75,15 @@ class IntResource(Resource):
         return self.value
 
     def __str__(self):
-        return '{}'.format(self.value)
+        return "{}".format(self.value)
 
 
 class ListResource(Resource):
     """List of resources. All of them should be same type."""
-    type_name = 'list'
+    type_name = "list"
+    serializer = "ListSerializer"
     value = models.ManyToManyField(
-        Resource, related_name='member_of_lists', null=True, blank=True)
+        Resource, related_name="member_of_lists", null=True, blank=True)
 
     @property
     def requirements(self):
@@ -98,7 +102,8 @@ class ListResource(Resource):
 
 class DictResource(Resource):
     """Dictionary of which keys are strings and values are resources."""
-    type_name = 'dict'
+    type_name = "dict"
+    serializer = "DictSerializer"
 
     @property
     def requirements(self):
@@ -123,9 +128,9 @@ class DictResource(Resource):
 
 class DictResourceEntry(models.Model):
     """Single mapping string -> resource in dictionary of resources."""
-    dictionary = models.ForeignKey(DictResource, related_name='entries')
+    dictionary = models.ForeignKey(DictResource, related_name="entries")
     key = models.TextField()
     value = models.ForeignKey(Resource)
 
     def __str__(self):
-        return '{}: {}'.format(self.key, self.value)
+        return "{}: {}".format(self.key, self.value)

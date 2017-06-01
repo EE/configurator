@@ -12,6 +12,7 @@ template_engine = Environment(autoescape=False)
 
 class AppResource(Resource):
     """An installed application."""
+    serializer = "AppSerializer"
     required_resource = models.ForeignKey(
         DictResource,
         blank=True, null=True,
@@ -49,7 +50,8 @@ class AppResource(Resource):
                 .from_string(self.command)\
                 .render(context)
 
-        env[env_entry]['services'][self.docker_service_name] = service_description
+        env[env_entry]['services'][
+            self.docker_service_name] = service_description
 
     @property
     def docker_service_name(self):
@@ -75,9 +77,9 @@ class MountedFile(models.Model):
         ), 'w') as target_file:
 
             target_file.write(
-                template_engine\
-                    .from_string(tpl)\
-                    .render(context)
+                template_engine
+                .from_string(tpl)
+                .render(context)
             )
 
         return '{}:{}:ro'.format(self.rendered_file_path, self.mount_path)

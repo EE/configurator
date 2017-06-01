@@ -12,6 +12,7 @@ class HTTPResource(Resource):
      * `host`, `port` and `path` specify location.
     """
     type_name = 'http'
+    serializer = "HttpSerializer"
 
     app = models.ForeignKey('application.AppResource', blank=True, null=True)
     api = models.CharField(max_length=200, blank=True)
