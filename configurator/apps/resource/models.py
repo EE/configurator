@@ -83,7 +83,7 @@ class ListResource(Resource):
     type_name = "list"
     serializer = "ListSerializer"
     value = models.ManyToManyField(
-        Resource, related_name="member_of_lists", null=True, blank=True)
+        Resource, related_name="member_of_lists", blank=True)
 
     @property
     def requirements(self):

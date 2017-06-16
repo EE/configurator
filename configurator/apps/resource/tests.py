@@ -22,3 +22,11 @@ class APITest(TestCase):
 
         self.assertEqual(
             b'"testInt"' in response.content, True)
+
+
+class ListResourceTest(TestCase):
+
+    def test_empty_list(self):
+        l = ListResource.objects.create(name='test list')
+        l.full_clean()
+        self.assertEqual(len(l.value.all()), 0)
