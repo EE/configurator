@@ -4,9 +4,6 @@ from .models import *
 from configurator.apps.http_resource.models import HTTPResource
 
 
-THIS_MODULE = sys.modules[__name__]
-
-
 class ResourceAbstractSerializer(serializers.ModelSerializer):
     type = serializers.CharField(read_only=True, source='type_name')
 
@@ -24,10 +21,7 @@ class ResourceSerializer(ResourceAbstractSerializer):
         """
         Because Resource is Polymorphic
         """
-        if obj.serializer == "ResourceSerializer":
-            return super(ResourceSerializer, self).to_representation(obj)
-        else:
-            return getattr(THIS_MODULE, obj.serializer)(obj, context=self.context).to_representation(obj)
+        return obj.serializer()(obj, context=self.context).to_representation(obj)
 
 
 class StringSerializer(ResourceAbstractSerializer):
@@ -64,10 +58,3 @@ class ListSerializer(ResourceAbstractSerializer):
 
     class Meta(ResourceAbstractSerializer.Meta):
         model = ListResource
-
-
-class HttpSerializer(ResourceAbstractSerializer):
-    # zrobić refa z pola app
-
-    class Meta(ResourceAbstractSerializer.Meta):
-        model = HTTPResource

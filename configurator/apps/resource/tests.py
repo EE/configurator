@@ -4,6 +4,19 @@ from .models import *
 from django.core.management import call_command
 
 
+class SerializerTestMixin:
+
+    def assert_serializer_output(self, obj, output):
+        d = output
+        d.update({
+            'type': obj.type_name,
+            'id': obj.pk,
+            'name': obj.name,
+            'description': obj.description,
+        })
+        self.assertEqual(obj.serializer()(obj).data, d)
+
+
 class APITest(TestCase):
 
     def setUp(self):

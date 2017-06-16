@@ -1,10 +1,24 @@
 from django.db import models
 from polymorphic.models import PolymorphicModel
+from importlib import import_module
 
 
 class Resource(PolymorphicModel):
-    """Abstract resource."""
-    serializer = "ResourceSerializer"
+    """Abstract resource.
+
+    Subclasses should define class variables:
+     * serializer_name = ('path.to.module', 'SerializerClassName')
+     * type_name # a string
+    """
+
+    @classmethod
+    def serializer(cls):
+        """Serializer for this class retrieveved from class variable
+        `serializer_name`."""
+        return getattr(
+            import_module(cls.serializer_name[0]),
+            cls.serializer_name[1]
+        )
 
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
@@ -40,7 +54,8 @@ class Resource(PolymorphicModel):
 
 class StringResource(Resource):
     type_name = "string"
-    serializer = "StringSerializer"
+    serializer_name = ('configurator.apps.resource.serializers', 'StringSerializer')
+
     value = models.TextField()
 
     @property
@@ -60,7 +75,8 @@ class StringResource(Resource):
 
 class IntResource(Resource):
     type_name = "int"
-    serializer = "IntSerializer"
+    serializer_name = ('configurator.apps.resource.serializers', 'IntSerializer')
+
     value = models.IntegerField()
 
     @property
@@ -81,7 +97,8 @@ class IntResource(Resource):
 class ListResource(Resource):
     """List of resources. All of them should be same type."""
     type_name = "list"
-    serializer = "ListSerializer"
+    serializer_name = ('configurator.apps.resource.serializers', 'ListSerializer')
+
     value = models.ManyToManyField(
         Resource, related_name="member_of_lists", blank=True)
 
@@ -103,7 +120,7 @@ class ListResource(Resource):
 class DictResource(Resource):
     """Dictionary of which keys are strings and values are resources."""
     type_name = "dict"
-    serializer = "DictSerializer"
+    serializer_name = ('configurator.apps.resource.serializers', 'DictSerializer')
 
     @property
     def requirements(self):

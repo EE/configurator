@@ -17,8 +17,7 @@ class ResourceList(APIView):
                      if hasattr(r, 'type_name')]
         result = []
         for resource in resources:
-            serializer = getattr(serializers, resource.serializer)(
-                resource, many=False)
+            serializer = resource.serializer()(resource, many=False)
             result.append(serializer.data)
         return Response(result)
 
