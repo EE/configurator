@@ -98,6 +98,7 @@ class IntSerializer(ResourceModelSerializer):
 
 
 class DictEntrySerializer(serializers.ModelSerializer):
+    key = serializers.CharField()
     value = ResourceSerializer()
 
     class Meta:
@@ -111,6 +112,30 @@ class DictSerializer(ResourceModelSerializer):
 
     class Meta(ResourceModelSerializer.Meta):
         model = DictResource
+
+    def to_representation(self, obj):
+        r = super().to_representation(obj)
+        return dict(
+            r,
+            entries={e['key']: e['value'] for e in r['entries']}
+        )
+
+    def to_internal_value(self, data):
+        patched_data = dict(
+            data,
+            entries=[{'key': k, 'value': v} for k, v in data.get('entries', {}).items()]
+        )
+        return super().to_internal_value(patched_data)
+
+    def create(self, validated_data):
+        entries = validated_data.pop('entries')
+        d = DictResource.objects.create(**validated_data)
+        for v in entries:
+            d.entries.create(
+                key=v['key'],
+                value=ResourceSerializer.create_polymorphic(v['value'])
+            )
+        return d
 
 
 class ListSerializer(ResourceModelSerializer):
@@ -128,4 +153,3 @@ class ListSerializer(ResourceModelSerializer):
             for v in value
         ])
         return l
-

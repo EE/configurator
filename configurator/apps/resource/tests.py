@@ -25,6 +25,24 @@ class SerializerTestMixin:
         return s.save()
 
 
+class SerializerTestMixin:
+
+    def assert_serializer_output(self, obj, output):
+        d = output
+        d.update({
+            'type': obj.serializer().type_name,
+            'id': obj.pk,
+            'name': obj.name,
+            'description': obj.description,
+        })
+        self.assertEqual(ResourceSerializer(obj).data, d)
+
+    def create_resource(self, data):
+        s =  ResourceSerializer(data=data)
+        self.assertTrue(s.is_valid())
+        return s.save()
+
+
 class APITest(TestCase):
 
     def setUp(self):
@@ -110,3 +128,56 @@ class ListSerializerTest(TestCase, SerializerTestMixin):
             l.value.all()[0]
              .value.all()[0]
              .value.all().count(), 0)
+
+
+class DictSerializerTest(TestCase, SerializerTestMixin):
+
+    def test_serialize(self):
+        d = DictResource.objects.create(name='base')
+        dd = DictResource.objects.create(name='nested')
+        d.entries.create(key='k', value=dd)
+        self.assert_serializer_output(d, {
+            'name': 'base',
+            'entries': {
+                'k': {
+                    'id': dd.pk,
+                    'type': 'dict',
+                    'name': 'nested',
+                    'description': None,
+                    'entries': {},
+                },
+            },
+        })
+
+    def test_create_empty(self):
+        l = self.create_resource({
+            'type': 'dict',
+            'name': 'test_dict',
+            'entries': {},
+        })
+        self.assertIsInstance(l, DictResource)
+        self.assertEqual(l.name, 'test_dict')
+        self.assertEqual(l.entries.all().count(), 0)
+
+    def test_create_nested(self):
+        l = self.create_resource({
+            'type': 'dict',
+            'name': '1',
+            'entries': {
+                'nested': {
+                    'type': 'dict',
+                    'name': '2',
+                    'entries': {
+                        'more_nested': {
+                            'type': 'dict',
+                            'name': '3',
+                            'entries': {},
+                        },
+                    },
+                },
+            },
+        })
+        self.assertEqual(
+            l.entries.all()[0].value
+             .entries.all()[0].value
+             .entries.all().count(), 0)
