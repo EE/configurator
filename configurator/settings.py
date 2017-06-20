@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'configurator.apps.resource',
     'configurator.apps.application',
     'configurator.apps.http_resource',
+    'configurator.apps.postgresql',
 ]
 
 MIDDLEWARE = [
