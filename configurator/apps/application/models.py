@@ -12,7 +12,6 @@ template_engine = Environment(autoescape=False)
 
 class AppResource(Resource):
     """An installed application."""
-    type_name = 'app'
     serializer_name = ('configurator.apps.application.serializers', "AppSerializer")
 
     required_resource = models.ForeignKey(

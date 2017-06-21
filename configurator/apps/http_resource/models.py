@@ -11,7 +11,6 @@ class HTTPResource(Resource):
      * `api` is a string identifying type (protocol) of this HTTP resource.
      * `host`, `port` and `path` specify location.
     """
-    type_name = 'http'
     serializer_name = ('configurator.apps.http_resource.serializers', "HttpSerializer")
 
     app = models.ForeignKey('application.AppResource', blank=True, null=True)

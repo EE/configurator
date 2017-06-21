@@ -1,9 +1,10 @@
-from configurator.apps.resource.serializers import ResourceAbstractSerializer
+from configurator.apps.resource.serializers import ResourceModelSerializer
 from .models import HTTPResource
 
 
-class HttpSerializer(ResourceAbstractSerializer):
+class HttpSerializer(ResourceModelSerializer):
+    type_name = 'http'
     # zrobić refa z pola app
 
-    class Meta(ResourceAbstractSerializer.Meta):
+    class Meta(ResourceModelSerializer.Meta):
         model = HTTPResource

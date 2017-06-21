@@ -13,8 +13,7 @@ class ResourceList(APIView):
     """
 
     def get(self, request, format=None):
-        resources = [r for r in Resource.objects.all()
-                     if hasattr(r, 'type_name')]
+        resources = Resource.objects.all()
         result = []
         for resource in resources:
             serializer = resource.serializer()(resource, many=False)

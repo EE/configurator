@@ -8,7 +8,6 @@ class Resource(PolymorphicModel):
 
     Subclasses should define class variables:
      * serializer_name = ('path.to.module', 'SerializerClassName')
-     * type_name # a string
     """
 
     @classmethod
@@ -53,7 +52,6 @@ class Resource(PolymorphicModel):
 
 
 class StringResource(Resource):
-    type_name = "string"
     serializer_name = ('configurator.apps.resource.serializers', 'StringSerializer')
 
     value = models.TextField()
@@ -74,7 +72,6 @@ class StringResource(Resource):
 
 
 class IntResource(Resource):
-    type_name = "int"
     serializer_name = ('configurator.apps.resource.serializers', 'IntSerializer')
 
     value = models.IntegerField()
@@ -96,7 +93,6 @@ class IntResource(Resource):
 
 class ListResource(Resource):
     """List of resources. All of them should be same type."""
-    type_name = "list"
     serializer_name = ('configurator.apps.resource.serializers', 'ListSerializer')
 
     value = models.ManyToManyField(
@@ -119,7 +115,6 @@ class ListResource(Resource):
 
 class DictResource(Resource):
     """Dictionary of which keys are strings and values are resources."""
-    type_name = "dict"
     serializer_name = ('configurator.apps.resource.serializers', 'DictSerializer')
 
     @property
