@@ -1,0 +1,38 @@
+{
+	name: "Nginx reverse proxy",
+	description: "Proxies multiple HTTP services in a single HTTP service, under different paths.",
+	image: "nginx",
+	reload_cmd: ["nginx", "-s", "reload"],
+	files: [
+		{template: "nginx.conf.tpl", mount: "/etc/nginx.conf"}
+	],
+	requires: {
+		"services": {
+			type: "list",
+			description: "List of proxied services.",
+			default: [],
+			of: {
+				type: "dict",
+				descriptions: "Proxied service.",
+				content: {
+					"public_path": {
+						type: "string",
+						description: "Public path."
+					},
+					"service": {
+						type: "http_service",
+						description: "Internal service."
+					}
+				}
+			}
+		}
+	},
+	provides: [
+		{
+			type: "http_service",
+			description: "Client-side end of a proxy.",
+			api: "gui",
+			port: "80"
+		}
+	]
+}
