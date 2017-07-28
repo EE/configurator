@@ -1,0 +1,23 @@
+{
+	name: "httpd title server",
+	description: "Serves HTML page that has configurable title.",
+	image: "httpd",
+	files: [
+		{template: "index.html.tpl", mount: "/usr/local/apache2/htdocs/index.html"}
+	],
+	requires: {
+		"title": {
+			type: "string",
+			description: "Title to be displayed."
+			default: "Title"
+		},
+	},
+	provides: [
+		{
+			type: "http_service",
+			description: "Endopoint that serves page with title.",
+			api: "gui",
+			port: "80"
+		}
+	]
+}
